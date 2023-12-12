@@ -17,11 +17,21 @@ export const ShiftBotton = injector(({ Size, currentView  })=>{
   let year = date.getFullYear();
   let month = ("0" + (date.getMonth() + 1)).slice(-2);
   let day = ("0" + date.getDate()).slice(-2);
-  let data = `${month}.${day}.${year} 08:00`;
-  const onClick =() =>{
+  let hour1='02';
+  let hour2='08';
+  
+  const onClick =(shift) =>{
+    if(shift===2){
+      hour1='08';
+      hour2='13';
+    }
+    console.info("data",shift);
+    let data = { min: `${year}-${month}-${day}T${hour1}:00:00.000Z`, max: `${year}-${month}-${day}T${hour2}:00:00.000Z` };
     const filter = currentView.createFilter();
 
     filter.setFilterDelayed('filter:tasks:created_at');
+    filter.setOperator('in');
+    filter.setValue(data);
     filter.setValue(data);
   };
 
@@ -29,11 +39,13 @@ export const ShiftBotton = injector(({ Size, currentView  })=>{
     <Space style={{ fontSize: 12 }}>
       <Button
         size={Size}
-        onClick={onClick}> 
+        value={1}
+        onClick={()=>onClick(1)}> 
       Ca 1 </Button>
       <Button 
         size={Size}
-        onClick={onClick}>
+        value={2}
+        onClick={()=>onClick(2)}>
        Ca 2 </Button>
     </Space>
   );
